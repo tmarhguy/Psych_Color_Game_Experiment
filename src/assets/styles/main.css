@@ -1,0 +1,185 @@
+/* Global styles */
+body {
+    font-family: 'Inter', Arial, sans-serif;
+    background: #f0f0f0;
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* Prevent scrolling */
+  }
+  
+  .app-root {
+    position: relative;
+    width: 100vw; /* Full width of the viewport */
+    height: 100vh; /* Full height of the viewport */
+    background: #f0f0f0;
+    margin: 0 auto;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* Animal grid container */
+  .animal-grid-rectangle {
+    position: absolute;
+    top: 0.5%;
+    left: 0.125%;
+    width: 49.75%; /* Adjusted for responsiveness */
+    height: 99%; /* Adjusted for responsiveness */
+    background-color: #ffffff; /* Pure white background */
+    border-radius: 10px;
+    border: 3px dashed #DEE1E6;
+    box-sizing: border-box;
+    padding: 10px;
+    border: 10px solid #070606;
+    border-radius: 16px; /* Adds rounded corners to the image */
+  }
+  
+  /* Example animal images */
+  .animal-image-1,
+  .animal-image-2,
+  .animal-image-3,
+  .animal-image-4,
+  .animal-image-5 {
+    position: absolute;
+    width: 10%; /* Responsive width */
+    height: auto; /* Maintain aspect ratio */
+  }
+  
+  .animal-image-1 {
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  .animal-image-2 {
+    top: 10%;
+    left: 10%;
+  }
+  
+  .animal-image-3 {
+    top: 70%;
+    left: 20%;
+  }
+  
+  .animal-image-4 {
+    top: 30%;
+    left: 70%;
+  }
+  
+  .animal-image-5 {
+    top: 80%;
+    left: 70%;
+  }
+  
+  /* Color picker (color wheel) 
+  .color-picker {
+    position: absolute;
+    top: 0.5%;
+    left: 50.25%;
+    z-index: 2;
+    cursor: crosshair;
+  } */
+
+  .color-picker {
+    position: absolute;
+    top: 0.5%; /* Adjusted for better responsiveness */
+    left: 50.55%; /* Center horizontally */
+    transform: translateX(-1%); /* Center alignment */
+    width: 49.5vw; /* 50% of the viewport width */
+    height: 49.5vh; /* Maintain aspect ratio */
+    z-index: 2;
+    cursor: crosshair;
+    border: 10px solid #070606;
+    border-radius: 16px; /* Adds rounded corners to the image */
+    overflow: hidden; /* Ensures the image respects the border radius */
+  }
+  
+  /* Selected color rectangle */
+  .color-display{
+    position: absolute;
+    top: 51.4%;
+    left: 50.1%;
+    width: 49.5%; /* Adjusted for responsiveness */
+    height: 40%; /* Adjusted for responsiveness */
+    background: #DE3B40;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    border-radius: 17px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border: 10px solid #070606;
+  } 
+  
+  /* Color input and label */
+  .color-display-input {
+    margin-right: 32px;
+    width: 80px;
+    height: 80px;
+    border: none;
+    background: none;
+    cursor: pointer;
+  }
+  
+  .color-display-label {
+    font-size: 2em;
+    color: #fff;
+    font-weight: 600;
+  }
+  
+  /* Score */
+  .score-text {
+    position: absolute;
+    bottom: 0.5vh; /* 2% of the viewport height from the bottom */
+    left: 50.25%; /* Positioned relative to the screen width */
+    width: 49.55vw; /* 40% of the viewport width */
+    height: 10vh; /* 10% of the viewport height */
+    display: flex; /* Enable Flexbox */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    text-align: center;
+    font-family: 'Inter', Arial, sans-serif;
+    font-size: 2.5em;
+    line-height: 1.2;
+    font-weight: 400;
+    color: #171A1F;
+    z-index: 3;
+    border: 2px solid #DE3B40; /* Optional: Add a border for the board */
+    border-radius: 8px; /* Optional: Rounded corners */
+    background-color: #f9f9f9; /* Optional: Light background */
+  }
+
+
+  .fancy-score {
+    position: absolute;
+    bottom: 0.5vh; /* 5% of the viewport height from the bottom */
+    width: 49.5vw; /* 20% of the viewport width */
+    left: 50.1%; /* Positioned relative to the screen width */
+    height: 5.8vh; /* 10% of the viewport height */
+    border: 10px solid #070606;
+    background: linear-gradient(135deg, #fff 60%, #ffe5e7 100%);
+    text-align: center;
+    font-family: 'Inter', Arial, sans-serif;
+    font-size: 1.5em;
+    line-height: 1.2;
+    font-weight: 600;
+    color: #171A1F;
+    z-index: 3;
+    border-radius: 17px;
+  }
+  
+  .fancy-score:hover {
+    box-shadow: 0 12px 32px rgba(222, 59, 64, 0.18), 0 4px 16px rgba(0,0,0,0.10);
+  }
+  
+  .score-number {
+    color: #010000;
+    font-size: 1.4em;
+    font-weight: 700;
+    text-shadow: 0 2px 8px rgba(222,59,64,0.08);
+    margin-left: 0.25em;
+    letter-spacing: 0.03em;
+  }
+  
