@@ -26,7 +26,7 @@ const ANIMALS = [
 const COLOR_TOLERANCE = 60;
 
 export default function App() {
-  const [selectedColor, setSelectedColor] = useState("#DE3B40"); // Default selected color
+  const [selectedColor, setSelectedColor] = useState("#FFFFFF"); // Default selected color
   const [score, setScore] = useState(0); // Initial score
 
   // Function to handle color matching and scoring
