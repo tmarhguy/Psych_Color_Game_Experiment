@@ -32,8 +32,8 @@ body {
     border: 3px dashed #DEE1E6;
     box-sizing: border-box;
     padding: 10px;
-    border: 10px solid #070606;
-    border-radius: 16px; /* Adds rounded corners to the image */
+    border: 5px solid #070606;
+    border-radius: 10px; /* Adds rounded corners to the image */
   }
   
   /* Example animal images */
@@ -72,45 +72,36 @@ body {
     top: 80%;
     left: 70%;
   }
-  
-  /* Color picker (color wheel) 
-  .color-picker {
-    position: absolute;
-    top: 0.5%;
-    left: 50.25%;
-    z-index: 2;
-    cursor: crosshair;
-  } */
 
   .color-picker {
     position: absolute;
     top: 0.5%; /* Adjusted for better responsiveness */
-    left: 50.55%; /* Center horizontally */
+    left: 50.5%; /* Center horizontally */
     transform: translateX(-1%); /* Center alignment */
     width: 49.5vw; /* 50% of the viewport width */
     height: 49.5vh; /* Maintain aspect ratio */
     z-index: 2;
     cursor: crosshair;
-    border: 10px solid #070606;
-    border-radius: 16px; /* Adds rounded corners to the image */
+    border: 5px solid #070606;
+    border-radius: 12px; /* Adds rounded corners to the image */
     overflow: hidden; /* Ensures the image respects the border radius */
   }
   
   /* Selected color rectangle */
   .color-display{
     position: absolute;
-    top: 51.4%;
-    left: 50.1%;
-    width: 49.5%; /* Adjusted for responsiveness */
+    top: 51.2%;
+    left: 50.05%;
+    width: 49.45%; /* Adjusted for responsiveness */
     height: 40%; /* Adjusted for responsiveness */
     background: #ffffff;
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 1;
-    border-radius: 17px;
+    border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border: 10px solid #070606;
+    border: 5px solid #070606;
   } 
   
   /* Color input and label */
@@ -147,7 +138,7 @@ body {
     color: #171A1F;
     z-index: 3;
     border: 2px solid #DE3B40; /* Optional: Add a border for the board */
-    border-radius: 8px; /* Optional: Rounded corners */
+    border-radius: 5px; /* Optional: Rounded corners */
     background-color: #f9f9f9; /* Optional: Light background */
   }
 
@@ -156,9 +147,9 @@ body {
     position: absolute;
     bottom: 0.5vh; /* 5% of the viewport height from the bottom */
     width: 49.5vw; /* 20% of the viewport width */
-    left: 50.1%; /* Positioned relative to the screen width */
-    height: 5.8vh; /* 10% of the viewport height */
-    border: 10px solid #070606;
+    left: 50.05%; /* Positioned relative to the screen width */
+    height: 6.2vh; /* 10% of the viewport height */
+    border: 5px solid #070606;
     background: linear-gradient(135deg, #fff 60%, #ffe5e7 100%);
     text-align: center;
     font-family: 'Inter', Arial, sans-serif;
@@ -167,7 +158,7 @@ body {
     font-weight: 600;
     color: #171A1F;
     z-index: 3;
-    border-radius: 17px;
+    border-radius: 10px;
   }
   
   .fancy-score:hover {
