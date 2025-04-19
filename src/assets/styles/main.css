@@ -87,22 +87,31 @@ body {
     overflow: hidden; /* Ensures the image respects the border radius */
   }
   
-  /* Selected color rectangle */
-  .color-display{
-    position: absolute;
-    top: 51.2%;
-    left: 50.05%;
-    width: 49.45%; /* Adjusted for responsiveness */
-    height: 40%; /* Adjusted for responsiveness */
-    background: #ffffff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border: 5px solid #070606;
-  } 
+/* Container for the two color displays */
+.color-display-container {
+  position: absolute;
+  top: 51%;
+  left: 50%;
+  width: 49.6%; /* Adjusted for responsiveness */
+  height: 41.25%; /* Adjusted for responsiveness */
+  display: flex; /* Use Flexbox to align the two displays side by side */
+  justify-content: space-between; /* Add space between the two displays */
+  align-items: center; /* Align displays vertically */
+  z-index: 1;
+}
+
+/* Individual color display */
+.color-display {
+  width: 49.6%; /* Each display takes up 48% of the container width */
+  height: 100%; /* Full height of the container */
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border: 5px solid #070606;
+}
   
   /* Color input and label */
   .color-display-input {

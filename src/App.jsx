@@ -27,6 +27,7 @@ const COLOR_TOLERANCE = 60;
 
 export default function App() {
   const [selectedColor, setSelectedColor] = useState("#FFFFFF"); // Default selected color
+  const [previousColor, setPreviousColor] = useState("#FFFFFF"); // Default previous color
   const [score, setScore] = useState(0); // Initial score
 
   // Function to handle color matching and scoring
@@ -37,20 +38,37 @@ export default function App() {
     }
   };
 
+  // Function to handle color change
+  const handleColorChange = (newColor) => {
+    setPreviousColor(selectedColor); // Update previous color
+    setSelectedColor(newColor); // Update selected color
+    
+    // Reset colors to white after 2 seconds
+    setTimeout(() => {
+      setPreviousColor("#FFFFFF");
+      setSelectedColor("#FFFFFF");
+    }, 1700);
+  };
+
   return (
     <div className="app-root">
       {/* Animal grid to display animals */}
       <AnimalGrid animals={ANIMALS} onAnimalClick={handleColorMatch} />
 
       {/* Color picker to select a color */}
-      <ColorPicker selectedColor={selectedColor} onColorChange={setSelectedColor} />
+      <ColorPicker selectedColor={selectedColor} onColorChange={handleColorChange} />
 
-      {/* Color display to show the currently selected color */}
-      <ColorDisplay color={selectedColor} />
+      {/* Container for two color displays */}
+      <div className="color-display-container">
+        {/* First color display */}
+        <ColorDisplay color={selectedColor} />
+
+        {/* Second color display */}
+        <ColorDisplay color={previousColor} />
+      </div>
 
       {/* Scoreboard to display the current score */}
       <ScoreBoard score={score} />
-      
     </div>
   );
 }
