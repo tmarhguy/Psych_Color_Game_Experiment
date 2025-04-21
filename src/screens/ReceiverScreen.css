@@ -1,0 +1,10 @@
+.rectangle {
+  position: absolute;
+  top: 0.5%; /* Adjusted for better responsiveness */
+  left: 50.5%; /* Center horizontally */
+  transform: translateX(-1%); /* Center alignment */
+  width: 49.5vw; /* Width of the rectangle */
+  height: 49.85vh; /* Height of the rectangle */
+  box-sizing: border-box; /* Include border in the size */
+  background-color: #ffffff; /* White background */
+}
