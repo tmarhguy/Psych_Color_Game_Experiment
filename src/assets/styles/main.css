@@ -96,7 +96,7 @@ body {
 .timer-label,
 .timer-seconds,
 .color-display-label {
-  font-size: clamp(1rem, 2vw, 2.5rem);
+  font-size: clamp(1rem, 2vw, 1.5rem);
 }
 
 .fancy-score {
@@ -107,7 +107,7 @@ body {
   height: 5vh;
   text-align: center;
   font-family: 'Inter', Arial, sans-serif;
-  font-size: clamp(1.2rem, 3vw, 2.4em);
+  font-size: clamp(1rem, 3vw, 1em);
   line-height: 1.2;
   font-weight: 600;
   color: #000000;
