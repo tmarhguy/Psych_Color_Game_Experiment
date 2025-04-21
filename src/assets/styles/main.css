@@ -1,10 +1,9 @@
 body {
   font-family: 'Inter', Arial, sans-serif;
-  background: #ffffff;
+  background: #fff;
   margin: 0;
   padding: 0;
   overflow: hidden;
-  /* Responsive base font size */
   font-size: clamp(1rem, 2vw, 1.5rem);
 }
 
@@ -12,7 +11,7 @@ body {
   position: relative;
   width: 100vw;
   height: 100vh;
-  background: #ffffff;
+  background: #fff;
   margin: 0 auto;
   overflow: hidden;
   display: flex;
@@ -24,14 +23,13 @@ body {
 /* Unified container with pure white background */
 .unified-container {
   position: absolute;
-  top: 0.5%;
-  left: 0.125%;
-  width: 99.75%;
-  height: 99%;
-  background: #ffffff;
-  border-radius: 10px;
-  border: 5px solid #070606;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  top: 0.4%;
+  left: 0.1%;
+  width: 99.8%;
+  height: 99.1%;
+  background: #fff;
+  border-radius: 11px;
+  border: 3px solid #000;
   box-sizing: border-box;
   overflow: hidden;
 }
@@ -40,9 +38,9 @@ body {
 .vertical-divider,
 .vertical-divider-2 {
   position: absolute;
-  background-color: #333;
+  background-color: #000;
   z-index: 2;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.22);
 }
 .vertical-divider {
   top: 0;
@@ -51,24 +49,23 @@ body {
   height: 100%;
 }
 .vertical-divider-2 {
-  top: 50.9%;
+  top: 50%;
   left: 81.5%;
   width: 3px;
-  height: 41.61%;
-  background-color: #000000;
+  height: 42.7%;
+  background-color: #000;
   overflow: hidden;
 }
 .horizontal-divider-top,
 .horizontal-divider-bottom,
 .horizontal-divider-middle {
   position: absolute;
-  background-color: #333;
+  background-color: #000;
   z-index: 2;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 .horizontal-divider-top,
 .horizontal-divider-middle {
-  width: 50%;
+  width: 50.1%;
   height: 5px;
   left: 50%;
 }
@@ -76,17 +73,10 @@ body {
   top: 50%;
 }
 .horizontal-divider-bottom {
-  width: 50%;
+  width: 50.1%;
   height: 5px;
-  top: 92.5%;
+  top: 92.6%;
   left: 50%;
-}
-.horizontal-divider-middle {
-  top: 50.9%;
-  width: 50%;
-  height: 3px;
-  background-color: #000000;
-  overflow: hidden;
 }
 
 /* Responsive text for all major UI elements */
@@ -101,8 +91,8 @@ body {
 
 .fancy-score {
   position: absolute;
-  bottom: 0.1vh;
-  width: 49.34vw;
+  bottom: 0.2vh;
+  width: 49.3vw;
   left: 53%;
   height: 5vh;
   text-align: center;
@@ -110,17 +100,17 @@ body {
   font-size: clamp(1rem, 3vw, 1em);
   line-height: 1.2;
   font-weight: 600;
-  color: #000000;
+  color: #000;
   z-index: 3;
-  background-color: #ffffff;
+  background-color: #fff;
 }
 
 .animal-grid-rectangle {
   position: absolute;
-  top: 0.5%;
-  left: 0.125%;
-  width: 49.75%;
-  height: 99%;
+  top: 0.4%;
+  left: 0.1%;
+  width: 49.8%;
+  height: 99.1%;
   background-color: transparent;
   padding: 10px;
 }
@@ -131,41 +121,29 @@ body {
   left: 50.1%;
   width: 50vw;
   height: 49.3vh;
-  z-index: 2;
+  z-index: 4;
   cursor: crosshair;
   overflow: hidden;
 }
 
 .color-display-container {
   position: absolute;
-  top: 51%;
+  top: 50%;
   left: 50.1%;
-  width: 51.28%;
-  height: 41.6%;
+  width: 51.3%;
+  height: 42.7%;
   display: flex;
   align-items: center;
   z-index: 1;
 }
 
 .color-display {
-  width: 61.4%;
+  width: 61.3%;
   height: 100%;
-  background: #ffffff;
+  background: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.receiver-screen .color-picker-placeholder {
-  position: absolute;
-  top: 0.5%;
-  left: 50.5%;
-  transform: translateX(-1%);
-  width: 49.5vw;
-  height: 49.5vh;
-  border: 3px solid #000000;
-  box-sizing: border-box;
 }
 
 .animal-image-1,
@@ -174,10 +152,10 @@ body {
 .animal-image-4,
 .animal-image-5 {
   position: absolute;
-  width: 8%;
+  width: 8.1%;
   height: auto;
   transition: transform 0.3s ease, width 0.3s ease;
-  background-color: #ffffff;
+  background-color: #fff;
 }
 
 /* ... (rest of your animal image positioning rules) ... */
