@@ -1,46 +1,34 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
+import PropTypes from "prop-types";
+
+AnimalGrid.propTypes = {
+  animals: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      image: PropTypes.string.isRequired,
+      color: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+  refreshPositions: PropTypes.number.isRequired,
+  onAnimalSelect: PropTypes.func,
+  role: PropTypes.oneOf(["sender", "receiver"]).isRequired,
+};
 
 export default function AnimalGrid({ animals, refreshPositions, onAnimalSelect, role }) {
   const [randomizedAnimals, setRandomizedAnimals] = useState([]);
-  const [selectedIndex, setSelectedIndex] = useState(0); // Track the currently selected animal
+  const [selectedIndex, setSelectedIndex] = useState(0);
 
   // Helper function to check if two positions overlap
-  const isOverlapping = (newAnimal, existingAnimals, buffer = 15) => {
+  const isOverlapping = useCallback((newAnimal, existingAnimals, buffer = 15) => {
     return existingAnimals.some((animal) => {
       const distanceX = Math.abs(newAnimal.left - animal.left);
       const distanceY = Math.abs(newAnimal.top - animal.top);
-      return distanceX < buffer && distanceY < buffer; // Check if bounding boxes overlap
+      return distanceX < buffer && distanceY < buffer;
     });
-  };
-
-  // Function to randomize positions of animals without overlaps
-  const randomizePositions = () => {
-    const randomized = [];
-    animals.forEach((animal) => {
-      let newAnimal;
-      let attempts = 0;
-      do {
-        newAnimal = {
-          ...animal,
-          top: Math.random() * 80 + 10, // Random top position (10% to 90%)
-          left: Math.random() * 80 + 10, // Random left position (10% to 90%)
-        };
-        attempts++;
-      } while (isOverlapping(newAnimal, randomized) && attempts < 100); // Retry if overlapping
-      randomized.push(newAnimal);
-    });
-    setRandomizedAnimals(randomized);
-
-    // Randomly select an animal for the sender
-    if (role === "sender") {
-      const randomIndex = Math.floor(Math.random() * randomized.length);
-      setSelectedIndex(randomIndex);
-      if (onAnimalSelect) onAnimalSelect(randomized[randomIndex]); // Notify parent of the selected animal
-    }
-  };
+  }, []);
 
   // Handle keyboard navigation (only for receiver)
-  const handleKeyDown = (event) => {
+  const handleKeyDown = useCallback((event) => {
     if (role !== "receiver" || randomizedAnimals.length === 0) return;
 
     let newIndex = selectedIndex;
@@ -54,17 +42,51 @@ export default function AnimalGrid({ animals, refreshPositions, onAnimalSelect, 
         newIndex = (selectedIndex + 1) % randomizedAnimals.length;
         break;
       case "Enter":
-        if (onAnimalSelect) onAnimalSelect(randomizedAnimals[selectedIndex]); // Trigger callback for selected animal
+        if (onAnimalSelect) onAnimalSelect(randomizedAnimals[selectedIndex]);
         break;
       default:
         return;
     }
     setSelectedIndex(newIndex);
-  };
+  }, [role, randomizedAnimals, selectedIndex, onAnimalSelect]);
 
+  // Effect to randomize positions - only when refreshPositions changes
   useEffect(() => {
-    randomizePositions();
-  }, [refreshPositions]);
+    const randomized = [];
+    
+    // Helper function to check if two positions overlap
+    const checkOverlap = (newAnimal, existingAnimals, buffer = 15) => {
+      return existingAnimals.some((animal) => {
+        const distanceX = Math.abs(newAnimal.left - animal.left);
+        const distanceY = Math.abs(newAnimal.top - animal.top);
+        return distanceX < buffer && distanceY < buffer;
+      });
+    };
+    
+    animals.forEach((animal) => {
+      let newAnimal;
+      let attempts = 0;
+      do {
+        newAnimal = {
+          ...animal,
+          top: Math.random() * 80 + 10,
+          left: Math.random() * 80 + 10,
+        };
+        attempts++;
+      } while (checkOverlap(newAnimal, randomized) && attempts < 100);
+      randomized.push(newAnimal);
+    });
+    setRandomizedAnimals(randomized);
+  }, [refreshPositions, animals]); // Only refreshPositions and animals
+
+  // Separate effect to handle animal selection for sender
+  useEffect(() => {
+    if (role === "sender" && randomizedAnimals.length > 0) {
+      const randomIndex = Math.floor(Math.random() * randomizedAnimals.length);
+      setSelectedIndex(randomIndex);
+      if (onAnimalSelect) onAnimalSelect(randomizedAnimals[randomIndex]);
+    }
+  }, [role, randomizedAnimals, onAnimalSelect]); // This runs when role changes, but doesn't affect positioning
 
   useEffect(() => {
     if (role === "receiver") {
@@ -73,7 +95,7 @@ export default function AnimalGrid({ animals, refreshPositions, onAnimalSelect, 
         window.removeEventListener("keydown", handleKeyDown);
       };
     }
-  }, [selectedIndex, randomizedAnimals, role]);
+  }, [role, handleKeyDown]);
 
   return (
     <div className="animal-grid-rectangle">

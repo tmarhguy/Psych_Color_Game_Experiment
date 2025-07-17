@@ -1,9 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
+import PropTypes from "prop-types";
 import "./TimerDisplay.css";
 
-export default function TimerDisplay({ initialTime = 10, onTimerEnd }) {
-  const [timer, setTimer] = useState(initialTime);
+export default function TimerDisplay({ timer, setTimer, onTimerEnd }) {
   const canvasRef = useRef(null);
+  const initialTime = 10; // Fixed initial time
 
   useEffect(() => {
     if (timer > 0) {
@@ -12,7 +13,7 @@ export default function TimerDisplay({ initialTime = 10, onTimerEnd }) {
     } else if (onTimerEnd) {
       onTimerEnd();
     }
-  }, [timer, onTimerEnd]);
+  }, [timer, onTimerEnd, setTimer]);
 
   // Draw the circular countdown ring and the timer number
   useEffect(() => {
@@ -86,3 +87,9 @@ export default function TimerDisplay({ initialTime = 10, onTimerEnd }) {
     </div>
   );
 }
+
+TimerDisplay.propTypes = {
+  timer: PropTypes.number.isRequired,
+  setTimer: PropTypes.func.isRequired,
+  onTimerEnd: PropTypes.func.isRequired,
+};

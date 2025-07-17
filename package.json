@@ -1,8 +1,11 @@
 {
-  "name": "my-animal-color-app",
+  "name": "color-communication-game",
   "version": "1.0.0",
   "private": true,
+  "description": "A psychology experiment game for color communication using animal matching",
+  "keywords": ["psychology", "experiment", "color", "game", "research"],
   "dependencies": {
+    "prop-types": "^15.8.1",
     "react": "^18.0.0",
     "react-color": "^2.19.3",
     "react-colorful": "^5.6.1",
@@ -13,7 +16,10 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "eslint src/**/*.{js,jsx}",
+    "lint:fix": "eslint src/**/*.{js,jsx} --fix",
+    "analyze": "npm run build && npx source-map-explorer 'build/static/js/*.js'"
   },
   "browserslist": {
     "production": [

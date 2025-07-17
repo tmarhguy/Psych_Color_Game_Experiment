@@ -1,31 +1,35 @@
 import React, { useEffect, useState, useRef } from "react";
+import PropTypes from "prop-types";
 
 export default function ColorDisplay({ color }) {
-  const [displayColor, setDisplayColor] = useState("#FFFFFF"); // Default to white
+  const [displayColor, setDisplayColor] = useState("#FFFFFF");
   const timeoutRef = useRef(null);
 
   useEffect(() => {
     // Clear any previous timeout
-    if (timeoutRef.current) clearTimeout(timeoutRef.current);
-
-    // Reset to white immediately before setting the new color
-    setDisplayColor("#FFFFFF");
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
 
     // Only set the new color and start the timer if the color is not white
     if (color && color.toUpperCase() !== "#FFFFFF") {
+      setDisplayColor(color);
+      
       timeoutRef.current = setTimeout(() => {
-        setDisplayColor("#FFFFFF"); // Reset to white after 2 seconds
+        setDisplayColor("#FFFFFF");
+        timeoutRef.current = null;
       }, 2000);
-
-      // Set the new color after resetting to white
-      setTimeout(() => {
-        setDisplayColor(color);
-      }, 0); // Delay by 0ms to ensure reset happens first
+    } else {
+      setDisplayColor("#FFFFFF");
     }
 
-    // Cleanup on unmount
+    // Cleanup on unmount or dependency change
     return () => {
-      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+        timeoutRef.current = null;
+      }
     };
   }, [color]);
 
@@ -38,3 +42,7 @@ export default function ColorDisplay({ color }) {
     </div>
   );
 }
+
+ColorDisplay.propTypes = {
+  color: PropTypes.string.isRequired,
+};
