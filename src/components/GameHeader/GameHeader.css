@@ -1,0 +1,335 @@
+/* Game Header - Modern & Cohesive Design */
+.game-header {
+  width: 100%;
+  max-width: 100%;
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(12px);
+  border-radius: 16px;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.08),
+    0 2px 8px rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(229, 231, 235, 0.4);
+  padding: 15px 15px 12px 15px;
+  margin: 0;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.game-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    var(--primary-600),
+    var(--secondary-500),
+    var(--primary-600)
+  );
+  opacity: 0.8;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.header-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.info-section {
+  justify-content: flex-start;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.timer-section {
+  justify-content: flex-end;
+  flex-shrink: 0;
+  margin-right: 2px;
+}
+
+/* Stat Cards */
+.stat-card {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  padding: 8px 12px;
+  background: rgba(248, 250, 252, 0.8);
+  border-radius: 10px;
+  border: 1px solid rgba(226, 232, 240, 0.6);
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  min-width: 70px;
+  backdrop-filter: blur(8px);
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+
+.stat-card:hover {
+  transform: translateY(-1px);
+  background: rgba(248, 250, 252, 0.95);
+  box-shadow: 
+    0 4px 16px rgba(0, 0, 0, 0.06),
+    0 1px 4px rgba(0, 0, 0, 0.04);
+  border-color: rgba(203, 213, 225, 0.8);
+}
+
+.stat-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 100%;
+  text-align: center;
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--neutral-600);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  line-height: 1;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.stat-value {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--neutral-800);
+  line-height: 1;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* Hover Effects */
+.new-timer:hover {
+  transform: translateY(-1px);
+  box-shadow: 
+    0 6px 25px rgba(0, 0, 0, 0.12),
+    0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.new-timer:hover .timer-ring {
+  transform: scale(1.02);
+}
+
+/* Round Progress Bar */
+.round-progress-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: rgba(229, 231, 235, 0.4);
+  overflow: hidden;
+}
+
+.round-progress-fill {
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    var(--primary-500),
+    var(--secondary-500)
+  );
+  border-radius: 0 2px 2px 0;
+  transition: width 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  position: relative;
+  overflow: hidden;
+}
+
+.round-progress-fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+  animation: shimmer 2s ease-in-out infinite;
+}
+
+/* Animations */
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .game-header {
+    padding: 12px 12px 10px 12px;
+  }
+  
+  .header-content {
+    gap: 12px;
+  }
+  
+  .header-section {
+    gap: 8px;
+  }
+  
+  .stat-card {
+    min-width: 65px;
+    padding: 6px 10px;
+  }
+  
+  .stat-value {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .game-header {
+    padding: 10px 10px 8px 10px;
+    border-radius: 12px;
+  }
+  
+  .header-content {
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+  }
+  
+  .info-section {
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    order: 2;
+    width: 100%;
+  }
+  
+  .timer-section {
+    justify-content: center;
+    order: 1;
+    margin-right: 0;
+  }
+  
+  .stat-card {
+    min-width: 60px;
+    padding: 6px 8px;
+  }
+  
+  .stat-value {
+    font-size: 0.95rem;
+  }
+  
+  .stat-label {
+    font-size: 0.7rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .game-header {
+    padding: 8px 8px 6px 8px;
+  }
+  
+  .header-section {
+    gap: 6px;
+  }
+  
+  .stat-card {
+    min-width: 55px;
+    padding: 5px 7px;
+  }
+  
+  .stat-value {
+    font-size: 0.9rem;
+  }
+  
+  .stat-label {
+    font-size: 0.65rem;
+  }
+}
+
+/* Pause Control - Testing Only */
+.pause-control {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin-left: 12px;
+  padding-left: 12px;
+  border-left: 1px solid var(--primary-200);
+}
+
+.pause-button {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid var(--primary-400);
+  background: var(--neutral-50);
+  color: var(--primary-600);
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.pause-button:hover {
+  background: var(--primary-100);
+  border-color: var(--primary-500);
+  transform: scale(1.05);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+}
+
+.pause-button:active {
+  transform: scale(0.95);
+}
+
+.pause-button.paused {
+  background: var(--secondary-100);
+  border-color: var(--secondary-500);
+  color: var(--secondary-700);
+}
+
+.pause-button.paused:hover {
+  background: var(--secondary-200);
+  border-color: var(--secondary-600);
+}
+
+.pause-label {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--neutral-600);
+  text-align: center;
+  min-width: 40px;
+}
+
+/* Responsive adjustments for pause control */
+@media (max-width: 768px) {
+  .pause-control {
+    margin-left: 8px;
+    padding-left: 8px;
+  }
+  
+  .pause-button {
+    width: 32px;
+    height: 32px;
+    font-size: 12px;
+  }
+  
+  .pause-label {
+    font-size: 9px;
+  }
+}

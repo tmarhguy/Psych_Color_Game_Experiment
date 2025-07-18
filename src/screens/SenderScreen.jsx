@@ -3,26 +3,56 @@ import PropTypes from "prop-types";
 import AnimalGrid from "../components/AnimalGrid/AnimalGrid";
 import ColorPicker from "../components/ColorPicker/ColorPicker";
 import ColorDisplay from "../components/ColorDisplay/ColorDisplay";
-import ScoreBoard from "../components/ScoreBoard/ScoreBoard";
+import "./SenderScreen.css";
 
 const SenderScreen = React.memo(({
   animals,
-  refreshPositions,
-  senderColor,
-  score,
+  targetAnimal,
   onColorChange,
-  timerDisplay,
+  selectedColor,
 }) => {
   return (
-    <>
-      <AnimalGrid animals={animals} refreshPositions={refreshPositions} role="sender" />
-      <ColorPicker onColorChange={onColorChange} />
-      <div className="color-display-container">
-        <ColorDisplay color={senderColor} />
-        {timerDisplay}
+    <div className="screen-container sender-screen">
+      <div className="role-indicator">
+        <span className="role-icon">🎨</span>
+        <span>Sender - Choose a Color</span>
       </div>
-      <ScoreBoard score={score} />
-    </>
+      
+      <div className="instruction-text">
+        Your goal is to help the receiver identify the target animal by selecting a color that best represents it.
+      </div>
+
+      {targetAnimal && (
+        <div className="target-animal-display">
+          <h3>Target Animal to Communicate:</h3>
+          <div className="target-animal-card">
+            <img src={targetAnimal.image} alt={targetAnimal.name} />
+            <div className="target-animal-name">{targetAnimal.name}</div>
+          </div>
+        </div>
+      )}
+
+      <div className="sender-content">
+        <div className="color-selection-area">
+          <h4>Choose Your Color:</h4>
+          <ColorPicker onColorChange={onColorChange} selectedColor={selectedColor} />
+        </div>
+        
+        <div className="color-preview">
+          <h4>Selected Color:</h4>
+          <ColorDisplay color={selectedColor} />
+        </div>
+      </div>
+      
+      <div className="animals-reference">
+        <h4>Available Animals:</h4>
+        <AnimalGrid 
+          animals={animals} 
+          role="sender" 
+          isReference={true}
+        />
+      </div>
+    </div>
   );
 });
 
@@ -36,11 +66,9 @@ SenderScreen.propTypes = {
       color: PropTypes.string.isRequired,
     })
   ).isRequired,
-  refreshPositions: PropTypes.number.isRequired,
-  senderColor: PropTypes.string.isRequired,
-  score: PropTypes.number.isRequired,
+  targetAnimal: PropTypes.object,
   onColorChange: PropTypes.func.isRequired,
-  timerDisplay: PropTypes.node.isRequired,
+  selectedColor: PropTypes.string.isRequired,
 };
 
 export default SenderScreen;

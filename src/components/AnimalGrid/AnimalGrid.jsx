@@ -1,18 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import PropTypes from "prop-types";
-
-AnimalGrid.propTypes = {
-  animals: PropTypes.arrayOf(
-    PropTypes.shape({
-      name: PropTypes.string.isRequired,
-      image: PropTypes.string.isRequired,
-      color: PropTypes.string.isRequired,
-    })
-  ).isRequired,
-  refreshPositions: PropTypes.number.isRequired,
-  onAnimalSelect: PropTypes.func,
-  role: PropTypes.oneOf(["sender", "receiver"]).isRequired,
-};
+import "./AnimalGrid.css";
 
 export default function AnimalGrid({ animals, refreshPositions, onAnimalSelect, role }) {
   const [randomizedAnimals, setRandomizedAnimals] = useState([]);
@@ -50,34 +38,41 @@ export default function AnimalGrid({ animals, refreshPositions, onAnimalSelect, 
     setSelectedIndex(newIndex);
   }, [role, randomizedAnimals, selectedIndex, onAnimalSelect]);
 
-  // Effect to randomize positions - only when refreshPositions changes
+  // Effect to arrange animals in a refined grid pattern
   useEffect(() => {
-    const randomized = [];
+    const arranged = [];
+    const animalCount = animals.length;
     
-    // Helper function to check if two positions overlap
-    const checkOverlap = (newAnimal, existingAnimals, buffer = 15) => {
-      return existingAnimals.some((animal) => {
-        const distanceX = Math.abs(newAnimal.left - animal.left);
-        const distanceY = Math.abs(newAnimal.top - animal.top);
-        return distanceX < buffer && distanceY < buffer;
-      });
-    };
+    // Create a grid layout based on number of animals
+    const cols = Math.ceil(Math.sqrt(animalCount));
+    const rows = Math.ceil(animalCount / cols);
     
-    animals.forEach((animal) => {
-      let newAnimal;
-      let attempts = 0;
-      do {
-        newAnimal = {
-          ...animal,
-          top: Math.random() * 80 + 10,
-          left: Math.random() * 80 + 10,
-        };
-        attempts++;
-      } while (checkOverlap(newAnimal, randomized) && attempts < 100);
-      randomized.push(newAnimal);
+    // Calculate spacing to ensure even distribution
+    const horizontalSpacing = 80 / (cols + 1);
+    const verticalSpacing = 80 / (rows + 1);
+    
+    // Shuffle animals for randomness while maintaining grid structure
+    const shuffledAnimals = [...animals].sort(() => Math.random() - 0.5);
+    
+    shuffledAnimals.forEach((animal, index) => {
+      const row = Math.floor(index / cols);
+      const col = index % cols;
+      
+      // Add slight random offset within grid cell for natural look
+      const randomOffsetX = (Math.random() - 0.5) * 8;
+      const randomOffsetY = (Math.random() - 0.5) * 8;
+      
+      const newAnimal = {
+        ...animal,
+        top: (row + 1) * verticalSpacing + 10 + randomOffsetY,
+        left: (col + 1) * horizontalSpacing + 10 + randomOffsetX,
+      };
+      
+      arranged.push(newAnimal);
     });
-    setRandomizedAnimals(randomized);
-  }, [refreshPositions, animals]); // Only refreshPositions and animals
+    
+    setRandomizedAnimals(arranged);
+  }, [refreshPositions, animals]);
 
   // Separate effect to handle animal selection for sender
   useEffect(() => {
@@ -100,21 +95,45 @@ export default function AnimalGrid({ animals, refreshPositions, onAnimalSelect, 
   return (
     <div className="animal-grid-rectangle">
       {randomizedAnimals.map((animal, idx) => (
-        <img
+        <div
           key={animal.name}
-          src={animal.image}
-          alt={animal.name}
-          className={`animal-image-${idx + 1}`}
+          className="animal-container"
           style={{
             position: "absolute",
             top: `${animal.top}%`,
             left: `${animal.left}%`,
             transform: "translate(-50%, -50%)",
-            border: idx === selectedIndex ? "3px solid black" : "none", // Highlight the selected animal
-            cursor: "pointer",
           }}
-        />
+          onClick={() => onAnimalSelect && onAnimalSelect(animal)}
+          title={animal.name}
+        >
+          <img
+            src={animal.image}
+            alt={animal.name}
+            className={`animal-image ${idx === selectedIndex ? 'selected' : ''}`}
+            style={{
+              border: idx === selectedIndex ? "4px solid #667eea" : "3px solid #ffffff",
+              boxShadow: idx === selectedIndex 
+                ? "0 0 0 2px rgba(102, 126, 234, 0.3), 0 8px 24px rgba(0, 0, 0, 0.2)" 
+                : undefined,
+            }}
+          />
+          <div className="animal-name-tooltip">{animal.name}</div>
+        </div>
       ))}
     </div>
   );
 }
+
+AnimalGrid.propTypes = {
+  animals: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      image: PropTypes.string.isRequired,
+      color: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+  refreshPositions: PropTypes.number.isRequired,
+  onAnimalSelect: PropTypes.func,
+  role: PropTypes.oneOf(["sender", "receiver"]).isRequired,
+};

@@ -1,0 +1,136 @@
+.animal-grid-rectangle {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 200px;
+  max-height: 350px;
+  border: 2px solid var(--primary-200);
+  border-radius: 12px;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  box-shadow: 
+    0 2px 8px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  overflow: hidden;
+  transition: all 0.3s ease;
+  flex: 1;
+}
+
+.animal-grid-rectangle:hover {
+  box-shadow: 
+    0 4px 16px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+.animal-grid-rectangle img {
+  width: clamp(45px, 6vw, 60px);
+  height: clamp(45px, 6vw, 60px);
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ffffff;
+  box-shadow: 
+    0 2px 8px rgba(0, 0, 0, 0.1),
+    0 1px 2px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  background: #ffffff;
+}
+
+.animal-grid-rectangle img:hover {
+  transform: scale(1.1) translateZ(0);
+  box-shadow: 
+    0 4px 16px rgba(0, 0, 0, 0.15),
+    0 2px 4px rgba(0, 0, 0, 0.1);
+  border-color: var(--primary-400);
+  z-index: 10;
+}
+
+.animal-grid-rectangle img:active {
+  transform: scale(1.05) translateZ(0);
+  transition: transform 0.1s ease;
+}
+
+/* Enhanced focus styles for accessibility */
+.animal-grid-rectangle img:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 
+    0 0 0 3px rgba(102, 126, 234, 0.3),
+    0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Animal container and tooltip styles */
+.animal-container {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.animal-container:hover .animal-name-tooltip {
+  opacity: 1;
+  transform: translateX(-50%) translateY(-8px);
+  visibility: visible;
+}
+
+.animal-name-tooltip {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(0);
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  pointer-events: none;
+  z-index: 20;
+}
+
+.animal-name-tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 4px solid transparent;
+  border-top-color: rgba(0, 0, 0, 0.8);
+}
+
+.animal-image.selected {
+  animation: selectedPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes selectedPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+@media (max-width: 768px) {
+  .animal-grid-rectangle {
+    height: 280px;
+  }
+
+  .animal-grid-rectangle img {
+    width: 50px;
+    height: 50px;
+    border-width: 2px;
+  }
+  
+  .animal-grid-rectangle img:hover {
+    transform: scale(1.1) translateZ(0);
+  }
+}
+
+@media (max-width: 480px) {
+  .animal-grid-rectangle {
+    height: 240px;
+  }
+
+  .animal-grid-rectangle img {
+    width: 40px;
+    height: 40px;
+  }
+}

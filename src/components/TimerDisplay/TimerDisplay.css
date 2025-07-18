@@ -1,49 +1,376 @@
-.timer-container {
-    position: absolute;
-    top: -0.5%;
-    bottom: 0%;
-    left: 62%;
-    width: 34.7%;
-    overflow: hidden;
-    z-index: 3;
-    background-color: #ffffff;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
+/* New Timer Implementation - Clean & Modern */
+.new-timer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.98);
+  border-radius: 16px;
+  box-shadow: 
+    0 4px 20px rgba(0, 0, 0, 0.08),
+    0 1px 4px rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(229, 231, 235, 0.6);
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  min-width: 140px;
+  backdrop-filter: blur(10px);
+}
+
+/* Timer Ring Container */
+.timer-ring {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 
+    0 2px 8px rgba(0, 0, 0, 0.06),
+    inset 0 1px 2px rgba(255, 255, 255, 0.8);
+}
+
+/* SVG Circle */
+.timer-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.timer-track {
+  opacity: 0.2;
+}
+
+.timer-progress-new {
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+  transition: stroke-dashoffset 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Timer Content Inside Circle */
+.timer-content-new {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  position: relative;
+}
+
+.timer-number-new {
+  font-size: clamp(1.8rem, 4vw, 2.4rem);
+  font-weight: 800;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  line-height: 1;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.timer-unit {
+  font-size: clamp(0.6rem, 1.2vw, 0.75rem);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-top: -2px;
+  opacity: 0.8;
+  transition: all 0.3s ease;
+}
+
+/* Status Message */
+.timer-message {
+  font-size: clamp(0.75rem, 1.4vw, 0.9rem);
+  font-weight: 600;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* Animation States */
+.new-timer.warning {
+  animation: warningPulse 1s ease-in-out infinite;
+}
+
+.new-timer.critical {
+  animation: criticalShake 0.6s ease-in-out infinite;
+}
+
+.new-timer.expired {
+  animation: expiredFlash 0.8s ease-in-out 3;
+}
+
+.new-timer.paused {
+  opacity: 0.7;
+  filter: grayscale(30%);
+}
+
+.new-timer.paused .timer-progress-new {
+  animation: pausedPulse 2s ease-in-out infinite;
+}
+
+/* Keyframe Animations */
+@keyframes warningPulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 
+      0 4px 20px rgba(0, 0, 0, 0.08),
+      0 1px 4px rgba(0, 0, 0, 0.04);
+  }
+  50% {
+    transform: scale(1.02);
+    box-shadow: 
+      0 6px 30px rgba(234, 88, 12, 0.15),
+      0 2px 8px rgba(234, 88, 12, 0.1);
+  }
+}
+
+@keyframes criticalShake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-2px) rotate(-0.5deg); }
+  75% { transform: translateX(2px) rotate(0.5deg); }
+}
+
+@keyframes expiredFlash {
+  0%, 100% { 
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% { 
+    opacity: 0.7;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes pausedPulse {
+  0%, 100% { 
+    opacity: 0.8;
+  }
+  50% { 
+    opacity: 0.4;
+  }
+}
+
+/* Hover Effects */
+.new-timer:hover {
+  transform: translateY(-1px);
+  box-shadow: 
+    0 6px 25px rgba(0, 0, 0, 0.12),
+    0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.new-timer:hover .timer-ring {
+  transform: scale(1.02);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .new-timer {
+    min-width: 120px;
+    padding: 12px;
+    gap: 8px;
   }
   
-  .timer-container canvas {
-    width: 100%;
-    height: 100%;
-    background-color: #ffffff;
-    display: block;
+  .timer-ring {
+    width: 80px;
+    height: 80px;
   }
   
-  .timer-content {
-    background: none;
-    box-shadow: none;
-    position: absolute;
-    top: 60%;
-    left: 50%;
-    transform: translate(-50%, 0);
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  .timer-svg {
+    width: 80px;
+    height: 80px;
+  }
+}
+
+@media (max-width: 480px) {
+  .new-timer {
+    min-width: 100px;
+    padding: 10px;
+    gap: 6px;
   }
   
-  /* Responsive timer label text */
-  .timer-label {
-    font-size: clamp(0.9rem, 2vw, 2.2rem); /* Responsive font size */
-    font-weight: bold;
-    color: #000000;
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
-    text-align: center;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
-    background-color: transparent;
-    margin: 0.4em 0 0 0;
-    line-height: 1.1;
+  .timer-ring {
+    width: 70px;
+    height: 70px;
   }
+  
+  .timer-svg {
+    width: 70px;
+    height: 70px;
+  }
+}
+
+.timer-circle {
+  position: relative;
+  width: clamp(70px, 10vw, 90px);
+  height: clamp(70px, 10vw, 90px);
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.timer-progress {
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
+  /* Remove transform from here since it's applied to the circle directly */
+}
+
+.timer-bg-circle {
+  opacity: 0.2;
+}
+
+.timer-progress-circle {
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+  /* Ensure smooth animation */
+  transition: stroke-dashoffset 1s linear;
+}
+
+.timer-number {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 800;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  z-index: 1;
+}
+
+.timer-icon {
+  font-size: clamp(0.8rem, 1.5vw, 1rem);
+  margin-top: 2px;
+  transition: all 0.3s ease;
+  z-index: 1;
+}
+
+.timer-status {
+  font-size: clamp(0.7rem, 1.2vw, 0.8rem);
+  font-weight: 600;
+  text-align: center;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.timer-progress-bar {
+  width: 100%;
+  height: 3px;
+  background: rgba(229, 231, 235, 0.5);
+  border-radius: 2px;
+  overflow: hidden;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+}
+
+.timer-progress-fill {
+  height: 100%;
+  border-radius: 2px;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.timer-progress-fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  animation: shimmer 2s ease-in-out infinite;
+}
+
+/* Animations */
+@keyframes urgentShake {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(2px); }
+}
+
+@keyframes gentlePulse {
+  0%, 100% { 
+    transform: scale(1);
+    box-shadow: 
+      0 8px 32px rgba(0, 0, 0, 0.1),
+      0 2px 8px rgba(0, 0, 0, 0.05);
+  }
+  50% { 
+    transform: scale(1.02);
+    box-shadow: 
+      0 12px 40px rgba(0, 0, 0, 0.15),
+      0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .modern-timer {
+    min-width: 160px;
+    padding: 16px;
+    gap: 12px;
+  }
+  
+  .timer-circle {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .timer-progress {
+    width: 106px;
+    height: 106px;
+  }
+  
+  .timer-number {
+    font-size: 2rem;
+  }
+  
+  .timer-status {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .modern-timer {
+    min-width: 140px;
+    padding: 12px;
+    gap: 10px;
+  }
+  
+  .timer-circle {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .timer-progress {
+    width: 86px;
+    height: 86px;
+  }
+  
+  .timer-number {
+    font-size: 1.75rem;
+  }
+  
+  .timer-status {
+    font-size: 0.8rem;
+  }
+}
   
