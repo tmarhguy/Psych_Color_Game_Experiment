@@ -11,15 +11,18 @@ const ReceiverScreen = React.memo(({
   refreshPositions,
   selectedAnimalIndex,
 }) => {
+  const handleAnimalSelection = (animal) => {
+    onAnimalSelect(animal);
+  };
   return (
     <div className="screen-container receiver-screen">
       <div className="role-indicator">
         <span className="role-icon">🔍</span>
-        <span>Receiver - Identify the Animal</span>
+        <span>Receiver Phase - Identify the Animal</span>
       </div>
       
       <div className="instruction-text">
-        Based on the color chosen by the sender, select the animal you think they were trying to communicate.
+        The sender chose this color to represent an animal. Which animal do you think they meant?
       </div>
 
       <div className="receiver-content">
@@ -27,23 +30,25 @@ const ReceiverScreen = React.memo(({
           <h4>Sender's Color Choice:</h4>
           <div className="color-display-wrapper">
             <ColorDisplay color={senderColor} />
-            <div className="color-hint">
-              What animal does this color make you think of?
+            <div className="color-info">
+              <span className="color-hex">{senderColor}</span>
+              <span className="color-hint">What animal does this represent?</span>
             </div>
           </div>
         </div>
         
         <div className="animal-selection">
-          <h4>Choose an Animal:</h4>
+          <h4>Select the Animal:</h4>
           <div className="selection-instruction">
-            Click on the animal you think matches the color
+            Click on the animal you think the sender was communicating
           </div>
           <AnimalGrid
             animals={animals}
             role="receiver"
-            onAnimalSelect={onAnimalSelect}
+            onAnimalSelect={handleAnimalSelection}
             refreshPositions={refreshPositions}
             selectedAnimalIndex={selectedAnimalIndex}
+            senderColor={senderColor}
           />
         </div>
       </div>

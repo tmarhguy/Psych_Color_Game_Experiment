@@ -5,8 +5,13 @@ import SenderScreen from "./screens/SenderScreen";
 import ReceiverScreen from "./screens/ReceiverScreen";
 import WelcomeScreen from "./screens/WelcomeScreen";
 import ResultsScreen from "./screens/ResultsScreen";
+import EnhancedWelcomeScreen from "./screens/EnhancedWelcomeScreen";
+import DemographicsScreen from "./screens/DemographicsScreen";
+import ColorVisionScreen from "./screens/ColorVisionScreen";
+import AssociationScreen from "./screens/AssociationScreen";
 import GameHeader from "./components/GameHeader/GameHeader";
 import ErrorBoundary from "./components/ErrorBoundary/ErrorBoundary";
+import TwoPlayerPrototype from "./TwoPlayerPrototype";
 
 // Animal images
 import dog from "./assets/images/dog.jpg";
@@ -28,12 +33,22 @@ const COLOR_TOLERANCE = 60;
 const MAX_ROUNDS = 10;
 
 export default function App() {
-  // Game state
-  const [gameState, setGameState] = useState("welcome"); // welcome, playing, results
+  // Add prototype mode toggle
+  const [showPrototype, setShowPrototype] = useState(false);
+  
+  // Game state - enhanced for research protocol
+  const [gameState, setGameState] = useState("enhanced-welcome"); 
+  // States: enhanced-welcome, demographics, color-vision, associations, playing, results
   const [currentRound, setCurrentRound] = useState(1);
   const [roundHistory, setRoundHistory] = useState([]);
   const [participantId, setParticipantId] = useState("");
   const [roundStartTime, setRoundStartTime] = useState(null);
+  
+  // Research data
+  const [demographicsData, setDemographicsData] = useState(null);
+  const [colorVisionData, setColorVisionData] = useState(null);
+  const [associationData, setAssociationData] = useState([]);
+  const [strategyData, setStrategyData] = useState([]);
   
   // Existing state
   const [role, setRole] = useState("sender");
@@ -98,7 +113,7 @@ export default function App() {
     }
   }, [difficulty]);
 
-  const recordRoundResult = useCallback((correct, selectedAnimal) => {
+  const recordRoundResult = useCallback((correct, selectedAnimal, strategyInfo = null) => {
     const responseTime = roundStartTime ? Date.now() - roundStartTime : 0;
     const roundData = {
       round: currentRound,
@@ -109,28 +124,39 @@ export default function App() {
       responseTime,
       colorDistance: selectedAnimal ? 
         Math.abs(parseInt(senderColor.slice(1), 16) - parseInt(selectedAnimal.color.slice(1), 16)) : 
-        null
+        null,
+      strategy: strategyInfo
     };
     
     setRoundHistory(prev => [...prev, roundData]);
+    
+    // Store strategy data separately for analysis
+    if (strategyInfo) {
+      setStrategyData(prev => [...prev, { round: currentRound, ...strategyInfo }]);
+    }
   }, [currentRound, targetAnimal, senderColor, roundStartTime]);
 
-  const handleColorChange = useCallback((newColor) => {
+  const handleColorChange = useCallback((newColor, strategyInfo = null) => {
     // Clear existing timeout
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
     
     setSenderColor(newColor);
     setRole("receiver");
     setTimer(getDifficultyTimer());
+    
+    // Store strategy data if provided
+    if (strategyInfo) {
+      setStrategyData(prev => [...prev, { round: currentRound, ...strategyInfo }]);
+    }
     // Don't refresh positions here - only on timer end
 
     // Set new timeout to reset color
     timeoutRef.current = setTimeout(() => {
       setSenderColor("#FFFFFF");
     }, 2000);
-  }, [getDifficultyTimer]);
+  }, [getDifficultyTimer, currentRound]);
 
-  const handleColorMatch = useCallback((animalColor, selectedAnimal) => {
+  const handleColorMatch = useCallback((animalColor, selectedAnimal, strategyInfo = null) => {
     // Clear existing timeout
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
     
@@ -140,8 +166,8 @@ export default function App() {
       setScore((prevScore) => prevScore + 1);
     }
     
-    // Record the round result
-    recordRoundResult(isCorrect, selectedAnimal);
+    // Record the round result with research data
+    recordRoundResult(isCorrect, selectedAnimal, strategyInfo);
     
     // Check if game is over
     if (currentRound >= MAX_ROUNDS) {
@@ -194,8 +220,42 @@ export default function App() {
     setRoundStartTime(Date.now());
   }, [getDifficultyTimer]);
 
+  // Research phase handlers
+  const handleEnhancedWelcomeComplete = useCallback((participantName) => {
+    setParticipantId(participantName);
+    setGameState("demographics");
+  }, []);
+
+  const handleDemographicsComplete = useCallback((data) => {
+    setDemographicsData(data);
+    setGameState("color-vision");
+  }, []);
+
+  const handleColorVisionComplete = useCallback((data) => {
+    setColorVisionData(data);
+    setGameState("associations");
+  }, []);
+
+  const handleAssociationsComplete = useCallback((data) => {
+    setAssociationData(data);
+    setGameState("playing");
+    setCurrentRound(1);
+    setScore(0);
+    setRoundHistory([]);
+    setTargetAnimal(ANIMALS[Math.floor(Math.random() * ANIMALS.length)]);
+    setRole("sender");
+    setTimer(getDifficultyTimer());
+    setRoundStartTime(Date.now());
+  }, [getDifficultyTimer]);
+
+  // Enhanced game handlers for research data collection
+  const handleStrategySubmit = useCallback((strategyData) => {
+    // Store strategy data and proceed with color change
+    handleColorChange(senderColor, strategyData);
+  }, [senderColor, handleColorChange]);
+
   const restartGame = useCallback(() => {
-    setGameState("welcome");
+    setGameState("enhanced-welcome");
     setCurrentRound(1);
     setScore(0);
     setRoundHistory([]);
@@ -204,24 +264,120 @@ export default function App() {
     setTimer(10);
     setTargetAnimal(null);
     setParticipantId("");
+    
+    // Reset research data
+    setDemographicsData(null);
+    setColorVisionData(null);
+    setAssociationData([]);
+    setStrategyData([]);
+    
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
   }, []);
 
   const exportResults = useCallback((data) => {
+    // Compile comprehensive research data
+    const completeData = {
+      participantId,
+      demographics: demographicsData,
+      colorVision: colorVisionData,
+      associations: associationData,
+      gameResults: {
+        score,
+        totalRounds: MAX_ROUNDS,
+        roundHistory,
+        difficulty
+      },
+      strategies: strategyData,
+      exportTime: new Date().toISOString(),
+      ...data
+    };
+    
     // Export data for research purposes
     // In production, this would send to a research database
     if (process.env.NODE_ENV === 'development') {
-      console.log("Exported results:", data);
+      console.log("Exported comprehensive research results:", completeData);
     }
     // Additional export logic can be added here
-  }, []);
+    return completeData;
+  }, [participantId, demographicsData, colorVisionData, associationData, score, roundHistory, difficulty, strategyData]);
 
   useEffect(() => {
     window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    // Add keyboard shortcut to toggle prototype (Shift + P)
+    const handlePrototypeToggle = (e) => {
+      if (e.shiftKey && e.key === 'P') {
+        setShowPrototype(prev => !prev);
+      }
+    };
+    window.addEventListener("keydown", handlePrototypeToggle);
+    
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("keydown", handlePrototypeToggle);
+    };
   }, [handleKeyDown]);
 
-  // Welcome Screen
+  // Show prototype if toggled
+  if (showPrototype) {
+    return (
+      <div>
+        <div style={{
+          position: 'fixed', 
+          top: 10, 
+          left: 10, 
+          zIndex: 9999, 
+          background: 'rgba(0,0,0,0.8)', 
+          color: 'white', 
+          padding: '10px', 
+          borderRadius: '5px',
+          fontSize: '12px'
+        }}>
+          Two-Player Prototype Mode (Shift+P to toggle back)
+        </div>
+        <TwoPlayerPrototype />
+      </div>
+    );
+  }
+
+  // Enhanced Welcome Screen (Research Consent)
+  if (gameState === "enhanced-welcome") {
+    return (
+      <EnhancedWelcomeScreen 
+        onConsentComplete={handleEnhancedWelcomeComplete}
+      />
+    );
+  }
+
+  // Demographics Collection Screen
+  if (gameState === "demographics") {
+    return (
+      <DemographicsScreen 
+        participantId={participantId}
+        onDemographicsComplete={handleDemographicsComplete}
+      />
+    );
+  }
+
+  // Color Vision Screening Screen
+  if (gameState === "color-vision") {
+    return (
+      <ColorVisionScreen 
+        onColorVisionComplete={handleColorVisionComplete}
+      />
+    );
+  }
+
+  // Association Learning Screen
+  if (gameState === "associations") {
+    return (
+      <AssociationScreen 
+        animals={ANIMALS}
+        onAssociationComplete={handleAssociationsComplete}
+      />
+    );
+  }
+
+  // Original Welcome Screen (fallback for non-research mode)
   if (gameState === "welcome") {
     return (
       <WelcomeScreen 
@@ -240,6 +396,10 @@ export default function App() {
         roundHistory={roundHistory}
         participantId={participantId}
         difficulty={difficulty}
+        demographicsData={demographicsData}
+        colorVisionData={colorVisionData}
+        associationData={associationData}
+        strategyData={strategyData}
         onRestart={restartGame}
         onExport={exportResults}
       />
@@ -267,6 +427,9 @@ export default function App() {
             targetAnimal={targetAnimal}
             onColorChange={handleColorChange}
             selectedColor={senderColor}
+            onStrategySubmit={handleStrategySubmit}
+            currentRound={currentRound}
+            totalRounds={MAX_ROUNDS}
           />
         ) : (
           <ReceiverScreen
@@ -275,6 +438,8 @@ export default function App() {
             onAnimalSelect={handleAnimalSelect}
             refreshPositions={refreshPositions}
             selectedAnimalIndex={selectedAnimalIndex}
+            currentRound={currentRound}
+            totalRounds={MAX_ROUNDS}
           />
         )}
       </div>

@@ -202,6 +202,67 @@
   font-size: 1.2rem;
 }
 
+/* Strategy Analysis Section */
+.strategy-analysis {
+  margin-bottom: 3rem;
+}
+
+.strategy-analysis h3 {
+  color: #333;
+  margin-bottom: 1.5rem;
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.strategy-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+}
+
+.strategy-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.strategy-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--primary-300);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.strategy-count {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--primary-600);
+  margin-bottom: 0.5rem;
+}
+
+.strategy-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--neutral-700);
+  margin-bottom: 0.25rem;
+}
+
+.strategy-percentage {
+  font-size: 0.8rem;
+  color: var(--neutral-500);
+  font-weight: 500;
+}
+
+/* Enhanced insight cards */
+.insight-card .data-point {
+  color: var(--primary-600);
+  font-weight: 500;
+  font-style: italic;
+}
+
 .insights-section {
   margin-bottom: 3rem;
 }

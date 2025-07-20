@@ -50,6 +50,11 @@ jspm_packages/
 
 # Optional eslint cache
 .eslintcache
+**/.eslintcache
+
+# Node modules cache
+node_modules/.cache/
+**/.cache/
 
 # Microbundle cache
 .rpt2_cache/

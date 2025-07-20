@@ -8,6 +8,10 @@ const ResultsScreen = ({
   roundHistory, 
   participantId, 
   difficulty,
+  demographicsData,
+  colorVisionData,
+  associationData,
+  strategyData,
   onRestart,
   onExport 
 }) => {
@@ -15,6 +19,12 @@ const ResultsScreen = ({
   const avgResponseTime = roundHistory.length > 0 
     ? (roundHistory.reduce((sum, round) => sum + (round.responseTime || 0), 0) / roundHistory.length / 1000).toFixed(1)
     : 0;
+
+  // Research-specific calculations
+  const strategyDistribution = strategyData.reduce((acc, strategy) => {
+    acc[strategy.strategy] = (acc[strategy.strategy] || 0) + 1;
+    return acc;
+  }, {});
 
   const getPerformanceMessage = () => {
     if (accuracy >= 80) return { emoji: "🎉", text: "Excellent Communication!", color: "#48bb78" };
@@ -28,11 +38,15 @@ const ResultsScreen = ({
   const exportData = () => {
     const data = {
       participantId: participantId || "anonymous",
+      demographics: demographicsData,
+      colorVision: colorVisionData,
+      associations: associationData,
       difficulty,
       totalScore: score,
       totalRounds,
       accuracy: parseFloat(accuracy),
       averageResponseTime: parseFloat(avgResponseTime),
+      strategyDistribution,
       completedAt: new Date().toISOString(),
       roundHistory: roundHistory.map((round, index) => ({
         round: index + 1,
@@ -41,8 +55,10 @@ const ResultsScreen = ({
         senderColor: round.senderColor,
         correct: round.correct,
         responseTime: round.responseTime,
-        colorDistance: round.colorDistance
-      }))
+        colorDistance: round.colorDistance,
+        strategy: round.strategy
+      })),
+      strategies: strategyData
     };
 
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
@@ -90,6 +106,24 @@ const ResultsScreen = ({
           </div>
         </div>
 
+        {/* Strategy Analysis */}
+        {Object.keys(strategyDistribution).length > 0 && (
+          <div className="strategy-analysis">
+            <h3>🎯 Strategy Analysis</h3>
+            <div className="strategy-grid">
+              {Object.entries(strategyDistribution).map(([strategy, count]) => (
+                <div key={strategy} className="strategy-card">
+                  <div className="strategy-count">{count}</div>
+                  <div className="strategy-name">{strategy.charAt(0).toUpperCase() + strategy.slice(1)}</div>
+                  <div className="strategy-percentage">
+                    {((count / strategyData.length) * 100).toFixed(0)}%
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         <div className="round-history">
           <h3>📊 Round-by-Round Performance</h3>
           <div className="history-grid">
@@ -125,7 +159,12 @@ const ResultsScreen = ({
               <h4>Color-Animal Associations</h4>
               <p>
                 Your performance helps researchers understand how people naturally 
-                associate colors with different animals and concepts.
+                associate colors with different animals and cultural concepts.
+                {associationData.length > 0 && (
+                  <span className="data-point">
+                    {" "}You provided {associationData.length} initial associations to compare with game performance.
+                  </span>
+                )}
               </p>
             </div>
             <div className="insight-card">
@@ -133,6 +172,11 @@ const ResultsScreen = ({
               <p>
                 This data contributes to studies on non-verbal communication 
                 and how visual cues can convey meaning across individuals.
+                {strategyData.length > 0 && (
+                  <span className="data-point">
+                    {" "}Your strategy choices reveal different approaches to color communication.
+                  </span>
+                )}
               </p>
             </div>
             <div className="insight-card">
@@ -142,6 +186,18 @@ const ResultsScreen = ({
                 and interpret color-based information.
               </p>
             </div>
+            {demographicsData && (
+              <div className="insight-card">
+                <h4>Cultural & Personal Factors</h4>
+                <p>
+                  Your demographic information helps researchers understand how 
+                  cultural background and personal experiences influence color perception.
+                  <span className="data-point">
+                    {" "}This contributes to more inclusive design research.
+                  </span>
+                </p>
+              </div>
+            )}
           </div>
         </div>
 
@@ -170,6 +226,10 @@ ResultsScreen.propTypes = {
   roundHistory: PropTypes.array.isRequired,
   participantId: PropTypes.string,
   difficulty: PropTypes.string.isRequired,
+  demographicsData: PropTypes.object,
+  colorVisionData: PropTypes.object,
+  associationData: PropTypes.array,
+  strategyData: PropTypes.array,
   onRestart: PropTypes.func.isRequired,
   onExport: PropTypes.func,
 };

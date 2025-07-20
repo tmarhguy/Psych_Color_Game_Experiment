@@ -386,6 +386,199 @@ data collection capabilities, professional appearance, and reliable functionalit
 across all platforms and devices.
 
 ===========================================================================
+                        PHASE 12: CORE GAME MECHANICS CLARIFICATION
+                                  July 2025
+===========================================================================
+
+CORE GAME MECHANICS REDEFINITION:
+=================================
+
+22. TRUE TWO-PLAYER COMMUNICATION SYSTEM:
+    Discovery: The original game concept is fundamentally different from current implementation
+    Core Mechanics:
+    - Player 1 (Sender): Sees selected animal → Chooses color to represent it
+    - Player 2 (Receiver): Sees only the color → Identifies which animal it represents
+    - Role Swapping: Players alternate sender/receiver roles each round
+    - Shared Scoring: Both players succeed together when they agree on same animal
+    - Time Pressure: All decisions made under countdown timer constraints
+    - Association Tracking: Monitor what colors players associate with animals over time
+
+23. MVP REQUIREMENTS ESTABLISHED:
+    Primary Research Objective: Study color-animal association patterns through communication
+    
+    Game Flow:
+    1. Animal is pre-selected and shown to sender
+    2. Sender chooses color that represents the animal
+    3. Receiver sees only the color and selects matching animal
+    4. Success = Both players pick the same animal (shared score increase)
+    5. Roles swap for next round
+    6. Process continues while tracking association patterns
+    
+    Research Data:
+    - What colors do individuals associate with specific animals?
+    - How effective is color-based concept communication?
+    - Do association patterns change over multiple rounds?
+    - Individual vs. cultural color-animal mappings
+
+24. IMPLEMENTATION GAP ANALYSIS:
+    Current State: Single-player research protocol with demographics/consent
+    Required State: Real-time two-player communication system
+    
+    Core Changes Needed:
+    - Multi-player session management
+    - Real-time state synchronization between players
+    - Role-based UI adaptation (sender vs. receiver views)
+    - Shared scoring mechanism
+    - Live association pattern tracking
+    - Timer-driven turn-based gameplay
+
+25. RESEARCH FOCUS CLARIFICATION:
+    Primary Question: How do people use colors to communicate animal concepts?
+    Secondary Questions:
+    - What color-animal associations are most common?
+    - How do cultural backgrounds affect color choices?
+    - Do players learn and adapt their color choices over time?
+    - What is the communication success rate for different animal-color pairs?
+
+===========================================================================
+                        PHASE 13: TWO-PLAYER PROTOTYPE & ANALYSIS
+                                  July 2025
+===========================================================================
+
+PROTOTYPE DEVELOPMENT:
+=====================
+
+26. TWO-PLAYER COMMUNICATION PROTOTYPE CREATED:
+    Created functional prototype demonstrating true two-player game mechanics
+    Location: src/TwoPlayerPrototype.jsx (accessible via Shift+P in main app)
+    
+    Key Features Demonstrated:
+    - Player 1 (Sender): Sees target animal → Selects color to communicate it
+    - Player 2 (Receiver): Sees only color → Identifies which animal it represents
+    - Shared scoring based on agreement (not color distance calculations)
+    - Role swapping between rounds
+    - Real-time communication flow simulation
+    - Round-by-round success tracking
+    - Communication success rate analysis
+
+27. ARCHITECTURE GAP ANALYSIS COMPLETED:
+    Current vs. Required Implementation Analysis:
+    
+    Current State:
+    ❌ Single player plays both sender and receiver roles sequentially
+    ❌ Same person sees animal, picks color, then sees color and picks animal
+    ❌ No real communication between different people
+    ❌ Complex research protocol (demographics, color vision, associations)
+    ❌ Success based on color distance calculations to predetermined animal colors
+    
+    Required State:
+    ✅ Two separate players with distinct simultaneous experiences
+    ✅ Player 1 sees animal and communicates via color choice
+    ✅ Player 2 sees only color and interprets animal meaning
+    ✅ Success based on agreement between players
+    ✅ Real-time state synchronization between players
+    ✅ Simplified focus on core communication mechanics
+
+28. FUNDAMENTAL ARCHITECTURAL CHANGES IDENTIFIED:
+    Major Systems Requiring Complete Redesign:
+    
+    A) Multi-Player State Management:
+       - Replace single role switching with two-player session management
+       - Implement real-time state synchronization (WebSocket/Socket.io)
+       - Add player matching and lobby system
+       - Create session-based game room management
+    
+    B) Game Logic Transformation:
+       - Remove color distance calculations (colorsAreSimilar function)
+       - Implement shared success tracking (agreement-based scoring)
+       - Add role-based UI adaptation for simultaneous different views
+       - Create turn coordination and waiting states
+    
+    C) Research Protocol Simplification:
+       - Remove complex multi-phase research workflow
+       - Focus purely on color-animal communication patterns
+       - Streamline data collection to communication success metrics
+       - Maintain essential consent and participant identification
+
+29. TECHNICAL IMPLEMENTATION ROADMAP:
+    Phase 1: Core Architecture Foundation
+    - Install and configure Socket.io for real-time communication
+    - Create basic lobby system for player pairing
+    - Implement session management for game rooms
+    - Add player identification and role assignment
+    
+    Phase 2: Game Logic Transformation
+    - Convert App.jsx from single-player to multi-player architecture
+    - Redesign SenderScreen for true sender experience (show target, send color)
+    - Redesign ReceiverScreen for true receiver experience (see color, pick animal)
+    - Implement shared scoring based on player agreement
+    
+    Phase 3: Real-Time Synchronization
+    - Add WebSocket event handling for game state updates
+    - Implement turn coordination between players
+    - Create waiting states and player readiness systems
+    - Add real-time feedback and round progression
+    
+    Phase 4: Enhanced Communication Features
+    - Add post-round communication success feedback
+    - Implement association pattern tracking across player pairs
+    - Create enhanced results analysis for communication effectiveness
+    - Add replay and learning features for player pairs
+
+30. RESEARCH FOCUS REALIGNMENT:
+    From Individual Color Associations → To Communication Effectiveness
+    
+    Previous Research Questions:
+    - What are personal color-animal associations?
+    - How do demographics affect individual color choices?
+    - What strategies do individuals use when selecting colors?
+    
+    New Research Questions:
+    - How effectively can colors communicate animal concepts between people?
+    - What color-animal pairs have highest communication success rates?
+    - Do players learn to adapt their color choices based on partner feedback?
+    - What factors influence successful color-based conceptual communication?
+    - How do cultural/individual differences affect communication success?
+
+31. PROTOTYPE VALIDATION SUCCESS:
+    The working prototype demonstrates feasibility of core concept:
+    ✅ Clear distinction between sender and receiver experiences
+    ✅ Intuitive communication flow from animal → color → animal
+    ✅ Meaningful shared scoring based on successful communication
+    ✅ Engaging role-swapping mechanics that maintain interest
+    ✅ Rich data collection opportunities for communication patterns
+    ✅ Scalable architecture ready for real-time implementation
+
+===========================================================================
+                              DEVELOPMENT STATUS UPDATE
+                                 July 2025
+===========================================================================
+
+CURRENT IMPLEMENTATION:
+=======================
+✅ Professional single-player research framework
+✅ Advanced UI/UX with glass morphism design
+✅ Comprehensive data collection and export
+✅ Complete technical documentation
+✅ Cross-platform compatibility and optimization
+
+REQUIRED ADAPTATIONS FOR MVP:
+============================
+🔄 Two-player real-time communication system
+🔄 Role-swapping mechanism implementation
+🔄 Shared scoring and success tracking
+🔄 Live association pattern monitoring
+🔄 Timer-driven turn-based gameplay
+🔄 Multi-player session state management
+
+RESEARCH OBJECTIVE ALIGNMENT:
+============================
+The core research goal is to understand color-animal association patterns
+through a communication game where success depends on shared understanding
+of color meanings between players.
+
+===========================================================================
                               DEVELOPMENT COMPLETE
                                  January 2025
 ===========================================================================
+
